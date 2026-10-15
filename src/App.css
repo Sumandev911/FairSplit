@@ -212,3 +212,4 @@ button.row:hover { background: color-mix(in srgb, var(--surface) 92%, var(--text
 @media (min-width: 900px) { .fab { right: max(24px, calc((100vw - 340px - 760px) / 2 + 16px)); } }
 .settle-hero .num { color: var(--accent); }
 .nw { white-space: nowrap; }
+.head-actions { display: flex; align-items: center; gap: 4px; }

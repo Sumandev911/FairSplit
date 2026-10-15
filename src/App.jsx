@@ -56,6 +56,14 @@ export default function App() {
 
   useEffect(() => { localStorage.setItem('fairsplit', JSON.stringify(groups)) }, [groups])
 
+  // Light/dark: starts from the device setting, the button overrides it and is remembered.
+  const [theme, setTheme] = useState(() => localStorage.getItem('fairsplit-theme')
+    || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    localStorage.setItem('fairsplit-theme', theme)
+  }, [theme])
+
   const addGroup = (g) => { setGroups([...groups, g]); setActiveId(g.id); setCreating(false) }
   const updateGroup = (g) => setGroups(groups.map((x) => (x.id === g.id ? g : x)))
   const deleteGroup = (id) => {
@@ -68,7 +76,13 @@ export default function App() {
       <aside className="groups-pane">
         <header className="pane-head">
           <h1>FairSplit</h1>
-          <button className="btn small" onClick={() => setCreating(true)}><Icon name="plus" size={18} />New group</button>
+          <div className="head-actions">
+            <button className="icon-btn theme-btn" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'} title={theme === 'dark' ? 'Light mode' : 'Dark mode'}>
+              <Icon name={theme === 'dark' ? 'sun' : 'moon'} />
+            </button>
+            <button className="btn small" onClick={() => setCreating(true)}><Icon name="plus" size={18} />New group</button>
+          </div>
         </header>
         {groups.length ? (
           <ul className="list grouped">
